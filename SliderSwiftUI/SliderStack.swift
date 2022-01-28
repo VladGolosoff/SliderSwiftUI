@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SliderStack: View {
     @Binding var value: Double
-    @State private var textField = ""
+    @State private var text = ""
     let color: Color
     
     var body: some View {
@@ -19,12 +19,13 @@ struct SliderStack: View {
                 .frame(width: 40.0, height: 20.0)
             Slider(value: $value, in: 0...255, step: 1)
                 .tint(color)
-            TextField("", text: $textField)
-                .frame(width: 60)
-                .textFieldStyle(.roundedBorder)
-                .keyboardType(.decimalPad)
+                .onChange(of: value) { newValue in
+                    text = "\(lround(newValue))"
+                }
+            TextFieldView(text: $text, value: $value)
         }
- 
+        .onAppear {
+            text = "\(lround(value))" }
     }
 }
 

@@ -12,10 +12,15 @@ struct ContentView: View {
     @State private var greenSliderValue: Double = 130
     @State private var blueSliderValue: Double = 130
     
+    @FocusState private var isInputActive: Bool
+    
     var body: some View {
         ZStack {
             Color.blue.opacity(0.4)
                 .ignoresSafeArea()
+                .onTapGesture {
+                    isInputActive = false
+                }
             VStack {
                 RoundedRectangle(cornerRadius: 15)
                     .frame(height: 300.0)
@@ -28,6 +33,15 @@ struct ContentView: View {
                     SliderStack(value: $redSliderValue, color: .red)
                     SliderStack(value: $greenSliderValue, color: .green)
                     SliderStack(value: $blueSliderValue, color: .blue)
+                }
+                .focused($isInputActive)
+                .toolbar {
+                    ToolbarItemGroup(placement: .keyboard) {
+                        Spacer()
+                        Button("Done") {
+                            isInputActive = false
+                        }
+                    }
                 }
                 .padding(.horizontal)
                 Spacer()
